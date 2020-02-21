@@ -19,30 +19,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A580E44A-1985-3D76-A923-CCF309AAC46D}</ProjectGuid>
+    <ProjectGuid>{529222B4-48FE-34D6-BF8E-F0FEFEFAA682}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <Platform>Win32</Platform>
-    <ProjectName>ALL_BUILD</ProjectName>
+    <ProjectName>haicrypt_virtual</ProjectName>
     <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
@@ -55,50 +55,153 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">haicrypt_virtual.dir\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">haicrypt_virtual.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">haicrypt_virtual</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">haicrypt_virtual.dir\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">haicrypt_virtual.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">haicrypt_virtual</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">haicrypt_virtual.dir\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">haicrypt_virtual.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">haicrypt_virtual</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">haicrypt_virtual.dir\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">haicrypt_virtual.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">haicrypt_virtual</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;HAICRYPT_DYNAMIC;HAICRYPT_EXPORTS;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.1";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;ENABLE_LOGGING=1;HAICRYPT_DYNAMIC;HAICRYPT_EXPORTS;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.1\";CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;HAICRYPT_DYNAMIC;HAICRYPT_EXPORTS;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.1";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;HAICRYPT_DYNAMIC;HAICRYPT_EXPORTS;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.1\";CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;HAICRYPT_DYNAMIC;HAICRYPT_EXPORTS;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.1";CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;HAICRYPT_DYNAMIC;HAICRYPT_EXPORTS;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.1\";CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;HAICRYPT_DYNAMIC;HAICRYPT_EXPORTS;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.1";CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;HAICRYPT_DYNAMIC;HAICRYPT_EXPORTS;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.1\";CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2013;C:\OpenSSL-Win32\include;D:\Projects\libsrt\pthread-win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <CustomBuild Include="D:\Projects\libsrt\srt\CMakeLists.txt">
@@ -157,49 +260,73 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\cryspr.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\cryspr-openssl.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_ctx_rx.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_ctx_tx.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_rx.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_sa.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_tx.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_xpt_srt.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_xpt_sta.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\haicrypt_log.cpp" />
+    <ClCompile Include="D:\Projects\libsrt\srt\common\win_time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\Projects\libsrt\srt\vc2013\ZERO_CHECK.vcxproj">
       <Project>{B47406F4-7229-3E71-9B54-0513A7544854}</Project>
       <Name>ZERO_CHECK</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </ProjectReference>
-    <ProjectReference Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.vcxproj">
-      <Project>{529222B4-48FE-34D6-BF8E-F0FEFEFAA682}</Project>
-      <Name>haicrypt_virtual</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </ProjectReference>
-    <ProjectReference Include="D:\Projects\libsrt\srt\vc2013\srt-file-transmit.vcxproj">
-      <Project>{666DFFEF-FD21-3505-B210-CD6ADB0032AE}</Project>
-      <Name>srt-file-transmit</Name>
-    </ProjectReference>
-    <ProjectReference Include="D:\Projects\libsrt\srt\vc2013\srt-live-transmit.vcxproj">
-      <Project>{4FEE446A-0F20-3055-BD76-AA20978C6403}</Project>
-      <Name>srt-live-transmit</Name>
-    </ProjectReference>
-    <ProjectReference Include="D:\Projects\libsrt\srt\vc2013\srt-tunnel.vcxproj">
-      <Project>{B29C4182-A1FD-32FA-9980-B67C420F9C07}</Project>
-      <Name>srt-tunnel</Name>
-    </ProjectReference>
-    <ProjectReference Include="D:\Projects\libsrt\srt\vc2013\srt_shared.vcxproj">
-      <Project>{C56BD772-194E-3B2D-B350-7B85C64295B7}</Project>
-      <Name>srt_shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="D:\Projects\libsrt\srt\vc2013\srt_static.vcxproj">
-      <Project>{423BA871-3B85-33D8-B14A-373F7F36FE26}</Project>
-      <Name>srt_static</Name>
-    </ProjectReference>
-    <ProjectReference Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.vcxproj">
-      <Project>{51031426-CEE8-36BC-A5AE-9DE24DFAFDF5}</Project>
-      <Name>srt_virtual</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </ProjectReference>
-    <ProjectReference Include="D:\Projects\libsrt\srt\vc2013\srtsupport_virtual.vcxproj">
-      <Project>{A4FE1111-3743-3886-895A-D031B08FCFDF}</Project>
-      <Name>srtsupport_virtual</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>

@@ -1,9 +1,10 @@
-D:/Projects/libsrt/srt/vc2013/CMakeFiles/INSTALL.dir
-D:/Projects/libsrt/srt/vc2013/CMakeFiles/srt-file-transmit.dir
-D:/Projects/libsrt/srt/vc2013/CMakeFiles/srt_shared.dir
-D:/Projects/libsrt/srt/vc2013/CMakeFiles/srt_virtual.dir
 D:/Projects/libsrt/srt/vc2013/CMakeFiles/srtsupport_virtual.dir
 D:/Projects/libsrt/srt/vc2013/CMakeFiles/srt_static.dir
+D:/Projects/libsrt/srt/vc2013/CMakeFiles/haicrypt_virtual.dir
+D:/Projects/libsrt/srt/vc2013/CMakeFiles/INSTALL.dir
+D:/Projects/libsrt/srt/vc2013/CMakeFiles/srt-file-transmit.dir
+D:/Projects/libsrt/srt/vc2013/CMakeFiles/srt_virtual.dir
+D:/Projects/libsrt/srt/vc2013/CMakeFiles/srt_shared.dir
 D:/Projects/libsrt/srt/vc2013/CMakeFiles/srt-live-transmit.dir
 D:/Projects/libsrt/srt/vc2013/CMakeFiles/srt-tunnel.dir
 D:/Projects/libsrt/srt/vc2013/CMakeFiles/ALL_BUILD.dir

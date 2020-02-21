@@ -9,9 +9,6 @@
     <CustomBuild Include="D:\Projects\libsrt\srt\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srtsupport_virtual.dir\$(Configuration)\apputil.obj">
-      <Filter>Object Libraries</Filter>
-    </Object>
     <Object Include="D:\Projects\libsrt\srt\vc2013\srtsupport_virtual.dir\$(Configuration)\logsupport.obj">
       <Filter>Object Libraries</Filter>
     </Object>

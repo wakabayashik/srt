@@ -58,42 +58,6 @@
     <ClCompile Include="D:\Projects\libsrt\srt\srtcore\srt_compat.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\srtcore\sync.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\cryspr.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\cryspr-openssl.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_ctx_rx.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_ctx_tx.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_rx.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_sa.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_tx.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\hcrypt_xpt_srt.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\haicrypt_log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\common\win_time.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\Projects\libsrt\srt\vc2013\version.h">

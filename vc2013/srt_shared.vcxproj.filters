@@ -66,40 +66,40 @@
     <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\srt_compat.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\sync.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\cryspr.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\cryspr.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\cryspr-openssl.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\cryspr-openssl.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\hcrypt.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\hcrypt.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\hcrypt_ctx_rx.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\hcrypt_ctx_rx.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\hcrypt_ctx_tx.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\hcrypt_ctx_tx.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\hcrypt_rx.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\hcrypt_rx.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\hcrypt_sa.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\hcrypt_sa.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\hcrypt_tx.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\hcrypt_tx.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\hcrypt_xpt_srt.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\hcrypt_xpt_srt.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\hcrypt_xpt_sta.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\haicrypt_log.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\haicrypt_log.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2013\srt_virtual.dir\$(Configuration)\win_time.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2013\haicrypt_virtual.dir\$(Configuration)\win_time.obj">
       <Filter>Object Libraries</Filter>
     </Object>
   </ItemGroup>
