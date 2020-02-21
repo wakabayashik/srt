@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Projects\libsrt\srt\apps\srt-live-transmit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Projects\libsrt\srt\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="D:\Projects\libsrt\srt\vc2013\srtsupport_virtual.dir\$(Configuration)\apputil.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Projects\libsrt\srt\vc2013\srtsupport_virtual.dir\$(Configuration)\logsupport.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Projects\libsrt\srt\vc2013\srtsupport_virtual.dir\$(Configuration)\socketoptions.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Projects\libsrt\srt\vc2013\srtsupport_virtual.dir\$(Configuration)\transmitmedia.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Projects\libsrt\srt\vc2013\srtsupport_virtual.dir\$(Configuration)\uriparser.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Projects\libsrt\srt\vc2013\srtsupport_virtual.dir\$(Configuration)\verbose.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Object Libraries">
+      <UniqueIdentifier>{6AB116F0-4840-384E-8B08-B57B816045E9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{8EA98F23-4616-38E5-AB9B-B0733CF73692}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
