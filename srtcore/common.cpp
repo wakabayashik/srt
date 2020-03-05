@@ -285,6 +285,41 @@ void CTimer::tick()
 
 uint64_t CTimer::getTime()
 {
+#define FIXED_ISSUE_669
+#if defined(FIXED_ISSUE_669)
+    // XXX Do further study on that. Currently Cygwin is also using gettimeofday,
+    // however Cygwin platform is supported only for testing purposes.
+
+    //For other systems without microsecond level resolution, add to this conditional compile
+#if defined(OSX) || (TARGET_OS_IOS == 1) || (TARGET_OS_TV == 1)
+    // Otherwise we will have an infinite recursive functions calls
+    if (m_bUseMicroSecond == false)
+    {
+        uint64_t x;
+        rdtsc(x);
+        return x / s_ullCPUFrequency;
+    }
+    // Specific fix may be necessary if rdtsc is not available either.
+    // Going further on Apple platforms might cause issue, fixed with PR #301.
+    // But it is very unlikely for the latest platforms.
+#endif
+#ifdef _WIN32
+    static LARGE_INTEGER tickFrequency;
+    static int isFirstCall = 1;
+    if (isFirstCall)
+    {
+        QueryPerformanceFrequency(&tickFrequency);
+        isFirstCall = 0;
+    }
+    LARGE_INTEGER tickNow;
+    QueryPerformanceCounter(&tickNow);
+    return tickNow.QuadPart * 1000000 / tickFrequency.QuadPart;
+#else
+    timeval t;
+    gettimeofday(&t, 0);
+    return t.tv_sec * uint64_t(1000000) + t.tv_usec;
+#endif
+#else //defined(FIXED_ISSUE_669)
     // XXX Do further study on that. Currently Cygwin is also using gettimeofday,
     // however Cygwin platform is supported only for testing purposes.
 
@@ -304,6 +339,7 @@ uint64_t CTimer::getTime()
     timeval t;
     gettimeofday(&t, 0);
     return t.tv_sec * uint64_t(1000000) + t.tv_usec;
+#endif //defined(FIXED_ISSUE_669)
 }
 
 void CTimer::triggerEvent()
