@@ -29,6 +29,15 @@ void SRTCompat_timeradd(struct timeval *a, struct timeval *b, struct timeval *re
 
 int SRTCompat_gettimeofday(struct timeval* tp, struct timezone* tz)
 {
+#define FIXED_ISSUE_669 1
+#if defined(FIXED_ISSUE_669)
+    // https://github.com/Haivision/srt/issues/669#issuecomment-527062037
+    struct timeb tb;
+    ftime(&tb);
+    tp->tv_sec  = (long)tb.time;
+    tp->tv_usec = 1000*tb.millitm;
+    return 0;
+#else
     static LARGE_INTEGER tickFrequency, epochOffset;
 
     // For our first call, use "ftime()", so that we get a time with a proper epoch.
@@ -62,4 +71,5 @@ int SRTCompat_gettimeofday(struct timeval* tp, struct timezone* tz)
         tp->tv_usec = (long) (((tickNow.QuadPart % tickFrequency.QuadPart) * 1000000L) / tickFrequency.QuadPart);
     }
     return 0;
+#endif
 }
