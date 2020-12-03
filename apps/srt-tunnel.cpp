@@ -27,7 +27,7 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "apputil.hpp"  // CreateAddrInet
+#include "apputil.hpp"  // CreateAddr
 #include "uriparser.hpp"  // UriParser
 #include "socketoptions.hpp"
 #include "logsupport.hpp"
@@ -60,6 +60,14 @@ testmedia.cpp
 
 using namespace std;
 
+const srt_logging::LogFA SRT_LOGFA_APP = 10;
+namespace srt_logging
+{
+Logger applog(SRT_LOGFA_APP, srt_logger_config, "TUNNELAPP");
+}
+
+using srt_logging::applog;
+
 class Medium
 {
     static int s_counter;
@@ -89,9 +97,9 @@ protected:
     mutex access; // For closing
 
     template <class DerivedMedium, class SocketType>
-    static Medium* CreateAcceptor(DerivedMedium* self, const sockaddr_in& sa, SocketType sock, size_t chunk)
+    static Medium* CreateAcceptor(DerivedMedium* self, const sockaddr_any& sa, SocketType sock, size_t chunk)
     {
-        string addr = SockaddrToString(sockaddr_any((sockaddr*)&sa, sizeof sa));
+        string addr = sockaddr_any(sa.get(), sizeof sa).str();
         DerivedMedium* m = new DerivedMedium(UriParser(self->type() + string("://") + addr), chunk);
         m->m_socket = sock;
         return m;
@@ -107,12 +115,28 @@ public:
         return os.str();
     }
 
-    Medium(UriParser u, size_t ch): m_counter(s_counter++), m_uri(u), m_chunk(ch) {}
+    Medium(const UriParser& u, size_t ch): m_counter(s_counter++), m_uri(u), m_chunk(ch) {}
     Medium(): m_counter(s_counter++) {}
 
     virtual const char* type() = 0;
     virtual bool IsOpen() = 0;
-    virtual void Close() = 0;
+    virtual void CloseInternal() = 0;
+
+    void CloseState()
+    {
+        m_open = false;
+        m_broken = true;
+    }
+
+    // External API for this class that allows to close
+    // the entity on request. The CloseInternal should
+    // redirect to a type-specific function, the same that
+    // should be also called in destructor.
+    void Close()
+    {
+        CloseState();
+        CloseInternal();
+    }
     virtual bool End() = 0;
 
     virtual int ReadInternal(char* output, int size) = 0;
@@ -154,6 +178,7 @@ public:
 
     virtual ~Medium()
     {
+        CloseState();
     }
 
 protected:
@@ -226,6 +251,13 @@ public:
         // If this thread is already stopped, don't stop.
         if (thr.joinable())
         {
+            LOGP(applog.Debug, "Engine::Stop: Closing media:");
+            // Close both media as a hanged up reading thread
+            // will block joining.
+            media[0]->Close();
+            media[1]->Close();
+
+            LOGP(applog.Debug, "Engine::Stop: media closed, joining engine thread:");
             if (thr.get_id() == std::this_thread::get_id())
             {
                 // If this is this thread which called this, no need
@@ -233,10 +265,12 @@ public:
                 // You must, however, detach yourself, or otherwise the thr's
                 // destructor would kill the program.
                 thr.detach();
+                LOGP(applog.Debug, "DETACHED.");
             }
             else
             {
                 thr.join();
+                LOGP(applog.Debug, "Joined.");
             }
         }
     }
@@ -351,6 +385,10 @@ void Engine::Worker()
                 throw Medium::ReadEOF("");
 
             case Medium::RD_AGAIN:
+                // Theoreticall RD_AGAIN should not be reported
+                // because it should be taken care of internally by
+                // repeated sending - unless we get m_broken set.
+                // If it is, however, it should be handled just like error.
             case Medium::RD_ERROR:
                 status = -1;
                 Medium::Error("Error while reading");
@@ -358,7 +396,7 @@ void Engine::Worker()
         }
         catch (Medium::ReadEOF&)
         {
-            Verb() << "EOF. Exitting engine.";
+            Verb() << "EOF. Exiting engine.";
             break;
         }
         catch (Medium::TransmissionError& er)
@@ -397,7 +435,7 @@ public:
     bool End() override { return m_eof; }
     bool Broken() override { return m_broken; }
 
-    void Close() override
+    void CloseSrt()
     {
         Verb() << "Closing SRT socket for " << uri();
         lock_guard<mutex> lk(access);
@@ -407,18 +445,23 @@ public:
         m_socket = SRT_ERROR;
     }
 
-    virtual const char* type() override { return "srt"; }
-    virtual int ReadInternal(char* output, int size) override;
-    virtual bool IsErrorAgain() override;
+    // Forwarded in order to separate the implementation from
+    // the virtual function so that virtual function is not
+    // being called in destructor.
+    void CloseInternal() override { return CloseSrt(); }
 
-    virtual void Write(bytevector& portion) override;
-    virtual void CreateListener() override;
-    virtual void CreateCaller() override;
-    virtual unique_ptr<Medium> Accept() override;
-    virtual void Connect() override;
+    const char* type() override { return "srt"; }
+    int ReadInternal(char* output, int size) override;
+    bool IsErrorAgain() override;
+
+    void Write(bytevector& portion) override;
+    void CreateListener() override;
+    void CreateCaller() override;
+    unique_ptr<Medium> Accept() override;
+    void Connect() override;
 
 protected:
-    virtual void Init() override;
+    void Init() override;
 
     void ConfigurePre();
     void ConfigurePost(SRTSOCKET socket);
@@ -430,9 +473,10 @@ protected:
         throw TransmissionError("ERROR: " + text + ": " + ri.getErrorMessage());
     }
 
-    virtual ~SrtMedium() override
+    ~SrtMedium() override
     {
-        Close();
+        CloseState();
+        CloseSrt();
     }
 };
 
@@ -481,7 +525,7 @@ public:
     bool End() override { return m_eof; }
     bool Broken() override { return m_broken; }
 
-    void Close() override
+    void CloseTcp()
     {
         Verb() << "Closing TCP socket for " << uri();
         lock_guard<mutex> lk(access);
@@ -490,15 +534,16 @@ public:
         tcp_close(m_socket);
         m_socket = -1;
     }
+    void CloseInternal() override { return CloseTcp(); }
 
-    virtual const char* type() override { return "tcp"; }
-    virtual int ReadInternal(char* output, int size) override;
-    virtual bool IsErrorAgain() override;
-    virtual void Write(bytevector& portion) override;
-    virtual void CreateListener() override;
-    virtual void CreateCaller() override;
-    virtual unique_ptr<Medium> Accept() override;
-    virtual void Connect() override;
+    const char* type() override { return "tcp"; }
+    int ReadInternal(char* output, int size) override;
+    bool IsErrorAgain() override;
+    void Write(bytevector& portion) override;
+    void CreateListener() override;
+    void CreateCaller() override;
+    unique_ptr<Medium> Accept() override;
+    void Connect() override;
 
 protected:
 
@@ -524,7 +569,8 @@ protected:
 
     virtual ~TcpMedium()
     {
-        Close();
+        CloseState();
+        CloseTcp();
     }
 };
 
@@ -575,9 +621,9 @@ void SrtMedium::CreateListener()
 
     ConfigurePre();
 
-    sockaddr_in sa = CreateAddrInet(m_uri.host(), m_uri.portno());
+    sockaddr_any sa = CreateAddr(m_uri.host(), m_uri.portno());
 
-    int stat = srt_bind(m_socket, (sockaddr*)&sa, sizeof sa);
+    int stat = srt_bind(m_socket, sa.get(), sizeof sa);
 
     if ( stat == SRT_ERROR )
     {
@@ -599,12 +645,13 @@ void TcpMedium::CreateListener()
 {
     int backlog = 5; // hardcoded!
 
-    m_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+    sockaddr_any sa = CreateAddr(m_uri.host(), m_uri.portno());
+
+    m_socket = socket(sa.get()->sa_family, SOCK_STREAM, IPPROTO_TCP);
     ConfigurePre();
 
-    sockaddr_in sa = CreateAddrInet(m_uri.host(), m_uri.portno());
-
-    int stat = ::bind(m_socket, (sockaddr*)&sa, sizeof sa);
+    int stat = ::bind(m_socket, sa.get(), sa.size());
 
     if (stat == -1)
     {
@@ -624,15 +671,19 @@ void TcpMedium::CreateListener()
 
 unique_ptr<Medium> SrtMedium::Accept()
 {
-    sockaddr_in sa;
-    int salen = sizeof sa;
-    SRTSOCKET s = srt_accept(m_socket, (sockaddr*)&sa, &salen);
+    sockaddr_any sa;
+    SRTSOCKET s = srt_accept(m_socket, (sa.get()), (&sa.len));
     if (s == SRT_ERROR)
     {
         Error(UDT::getlasterror(), "srt_accept");
     }
 
     ConfigurePost(s);
+
+    // Configure 1s timeout
+    int timeout_1s = 1000;
+    srt_setsockflag(m_socket, SRTO_RCVTIMEO, &timeout_1s, sizeof timeout_1s);
+
     unique_ptr<Medium> med(CreateAcceptor(this, sa, s, m_chunk));
     Verb() << "accepted a connection from " << med->uri();
 
@@ -641,13 +692,22 @@ unique_ptr<Medium> SrtMedium::Accept()
 
 unique_ptr<Medium> TcpMedium::Accept()
 {
-    sockaddr_in sa;
-    socklen_t salen = sizeof sa;
-    int s = ::accept(m_socket, (sockaddr*)&sa, &salen);
+    sockaddr_any sa;
+    int s = ::accept(m_socket, (sa.get()), (&sa.syslen()));
     if (s == -1)
     {
         Error(errno, "accept");
     }
+
+    // Configure 1s timeout
+    timeval timeout_1s { 1, 0 };
+    int st = setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout_1s, sizeof timeout_1s);
+    timeval re;
+    socklen_t size = sizeof re;
+    int st2 = getsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (char*)&re, &size);
+
+    LOGP(applog.Debug, "Setting SO_RCVTIMEO to @", m_socket, ": ", st == -1 ? "FAILED" : "SUCCEEDED",
+            ", read-back value: ", st2 == -1 ? int64_t(-1) : (int64_t(re.tv_sec)*1000000 + re.tv_usec)/1000, "ms");
 
     unique_ptr<Medium> med(CreateAcceptor(this, sa, s, m_chunk));
     Verb() << "accepted a connection from " << med->uri();
@@ -671,37 +731,80 @@ void TcpMedium::CreateCaller()
 
 void SrtMedium::Connect()
 {
-    sockaddr_in sa = CreateAddrInet(m_uri.host(), m_uri.portno());
+    sockaddr_any sa = CreateAddr(m_uri.host(), m_uri.portno());
 
-    int st = srt_connect(m_socket, (sockaddr*)&sa, sizeof sa);
+    int st = srt_connect(m_socket, sa.get(), sizeof sa);
     if (st == SRT_ERROR)
         Error(UDT::getlasterror(), "srt_connect");
 
     ConfigurePost(m_socket);
+
+    // Configure 1s timeout
+    int timeout_1s = 1000;
+    srt_setsockflag(m_socket, SRTO_RCVTIMEO, &timeout_1s, sizeof timeout_1s);
 }
 
 void TcpMedium::Connect()
 {
-    sockaddr_in sa = CreateAddrInet(m_uri.host(), m_uri.portno());
+    sockaddr_any sa = CreateAddr(m_uri.host(), m_uri.portno());
 
-    int st = ::connect(m_socket, (sockaddr*)&sa, sizeof sa);
+    int st = ::connect(m_socket, sa.get(), sa.size());
     if (st == -1)
         Error(errno, "connect");
 
     ConfigurePost(m_socket);
+
+    // Configure 1s timeout
+    timeval timeout_1s { 1, 0 };
+    setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout_1s, sizeof timeout_1s);
 }
 
 int SrtMedium::ReadInternal(char* w_buffer, int size)
 {
-    int st = srt_recv(m_socket, (w_buffer), size);
-    if (st == SRT_ERROR)
-        return -1;
+    int st = -1;
+    do
+    {
+        st = srt_recv(m_socket, (w_buffer), size);
+        if (st == SRT_ERROR)
+        {
+            int syserr;
+            if (srt_getlasterror(&syserr) == SRT_EASYNCRCV && !m_broken)
+                continue;
+        }
+        break;
+
+    } while (true);
+
     return st;
 }
 
 int TcpMedium::ReadInternal(char* w_buffer, int size)
 {
-    return ::recv(m_socket, (w_buffer), size, 0);
+    int st = -1;
+    LOGP(applog.Debug, "TcpMedium:recv @", m_socket, " - begin");
+    do
+    {
+        st = ::recv(m_socket, (w_buffer), size, 0);
+        if (st == -1)
+        {
+            if ((errno == EAGAIN || errno == EWOULDBLOCK))
+            {
+                if (!m_broken)
+                {
+                    LOGP(applog.Debug, "TcpMedium: read:AGAIN, repeating");
+                    continue;
+                }
+                LOGP(applog.Debug, "TcpMedium: read:AGAIN, not repeating - already broken");
+            }
+            else
+            {
+                LOGP(applog.Debug, "TcpMedium: read:ERROR: ", errno);
+            }
+        }
+        break;
+    } while (true);
+    LOGP(applog.Debug, "TcpMedium:recv @", m_socket, " - result: ", st);
+    return st;
 }
 
 bool SrtMedium::IsErrorAgain()
@@ -906,7 +1009,7 @@ private:
                 // the one critical section - make sure no other thread
                 // is accessing it at the same time and also make join all
                 // threads that might have been accessing it. After
-                // exitting as true (meaning that it was decommissioned
+                // exiting as true (meaning that it was decommissioned
                 // as expected) it can be safely deleted.
                 if ((*i)->decommission_if_dead(main_running))
                 {
@@ -915,7 +1018,6 @@ private:
             }
         }
     }
-
 };
 
 void Tunnel::Stop()
@@ -956,8 +1058,6 @@ Tunnelbox g_tunnels;
 std::unique_ptr<Medium> main_listener;
 
 size_t default_chunk = 4096;
-
-const srt_logging::LogFA SRT_LOGFA_APP = 10;
 
 int OnINT_StopService(int)
 {
@@ -1078,7 +1178,7 @@ int main( int argc, char** argv )
             std::unique_ptr<Medium> accepted = main_listener->Accept();
             if (!g_tunnels.main_running)
             {
-                Verb() << "Service stopped. Exitting.";
+                Verb() << "Service stopped. Exiting.";
                 break;
             }
             Verb() << "Connection accepted. Connecting to the relay...";

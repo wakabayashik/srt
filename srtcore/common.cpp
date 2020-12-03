@@ -58,166 +58,26 @@ modified by
 #include <cmath>
 #include <iostream>
 #include <iomanip>
-#include "srt.h"
+#include <iterator>
+#include <vector>
 #include "udt.h"
 #include "md5.h"
 #include "common.h"
 #include "netinet_any.h"
 #include "logging.h"
+#include "packet.h"
 #include "threadname.h"
 
 #include <srt_compat.h> // SysStrError
 
 using namespace srt::sync;
 
-
-Mutex CTimer::m_EventLock;
-pthread_cond_t CTimer::m_EventCond = PTHREAD_COND_INITIALIZER;
-
-CTimer::CTimer()
-    : m_tsSchedTime()
-    , m_TickCond()
-{
-#if ENABLE_MONOTONIC_CLOCK
-    pthread_condattr_t  CondAttribs;
-    pthread_condattr_init(&CondAttribs);
-    pthread_condattr_setclock(&CondAttribs, CLOCK_MONOTONIC);
-    pthread_cond_init(&m_TickCond, &CondAttribs);
-#else
-    pthread_cond_init(&m_TickCond, NULL);
-#endif
+namespace srt_logging {
+    extern Logger inlog;
 }
 
-CTimer::~CTimer()
-{
-    pthread_cond_destroy(&m_TickCond);
-}
+using namespace srt_logging;
 
-void CTimer::sleepto(const srt::sync::steady_clock::time_point& nexttime)
-{
-    // Use class member such that the method can be interrupted by others
-    m_tsSchedTime = nexttime;
-
-    steady_clock::time_point t = steady_clock::now();
-
-#if USE_BUSY_WAITING
-#if defined(_WIN32)
-    const uint64_t threshold_us = 10000;   // 10 ms on Windows: bad accuracy of timers
-#else
-    const uint64_t threshold_us = 1000;    // 1 ms on non-Windows platforms
-#endif
-#endif // USE_BUSY_WAITING
-
-    while (t < m_tsSchedTime)
-    {
-#if USE_BUSY_WAITING
-        uint64_t wait_us = count_microseconds(m_tsSchedTime - t);
-        if (wait_us <= 2 * threshold_us)
-            break;
-        wait_us -= threshold_us;
-#else
-        const uint64_t wait_us = count_microseconds(m_tsSchedTime - t);
-        if (wait_us == 0)
-            break;
-#endif // USE_BUSY_WAITING
-
-        timespec timeout;
-#if ENABLE_MONOTONIC_CLOCK
-        clock_gettime(CLOCK_MONOTONIC, &timeout);
-        const uint64_t time_us = timeout.tv_sec * uint64_t(1000000) + (timeout.tv_nsec / 1000) + wait_us;
-        timeout.tv_sec = time_us / 1000000;
-        timeout.tv_nsec = (time_us % 1000000) * 1000;
-#else
-        timeval now;
-        gettimeofday(&now, 0);
-        const uint64_t time_us = now.tv_sec * uint64_t(1000000) + now.tv_usec + wait_us;
-        timeout.tv_sec = time_us / 1000000;
-        timeout.tv_nsec = (time_us % 1000000) * 1000;
-#endif // ENABLE_MONOTONIC_CLOCK
-
-        THREAD_PAUSED();
-        enterCS(m_TickLock);
-        pthread_cond_timedwait(&m_TickCond, &m_TickLock.ref(), &timeout);
-        leaveCS(m_TickLock);
-        THREAD_RESUMED();
-
-        t = steady_clock::now();
-    }
-
-#if USE_BUSY_WAITING
-    while (t < m_tsSchedTime)
-    {
-#ifdef IA32
-        __asm__ volatile ("pause; rep; nop; nop; nop; nop; nop;");
-#elif IA64
-        __asm__ volatile ("nop 0; nop 0; nop 0; nop 0; nop 0;");
-#elif AMD64
-        __asm__ volatile ("nop; nop; nop; nop; nop;");
-#elif defined(_WIN32) && !defined(__MINGW__)
-        __nop();
-        __nop();
-        __nop();
-        __nop();
-        __nop();
-#endif
-
-        t = steady_clock::now();
-    }
-#endif // USE_BUSY_WAITING
-}
-
-void CTimer::interrupt()
-{
-   // schedule the sleepto time to the current CCs, so that it will stop
-   m_tsSchedTime = steady_clock::now();
-   tick();
-}
-
-void CTimer::tick()
-{
-    pthread_cond_signal(&m_TickCond);
-}
-
-
-void CTimer::triggerEvent()
-{
-    pthread_cond_signal(&m_EventCond);
-}
-
-CTimer::EWait CTimer::waitForEvent()
-{
-    timeval now;
-    timespec timeout;
-    gettimeofday(&now, 0);
-    if (now.tv_usec < 990000)
-    {
-        timeout.tv_sec = now.tv_sec;
-        timeout.tv_nsec = (now.tv_usec + 10000) * 1000;
-    }
-    else
-    {
-        timeout.tv_sec = now.tv_sec + 1;
-        timeout.tv_nsec = (now.tv_usec + 10000 - 1000000) * 1000;
-    }
-    enterCS(m_EventLock);
-    int reason = pthread_cond_timedwait(&m_EventCond, &m_EventLock.ref(), &timeout);
-    leaveCS(m_EventLock);
-
-    return reason == ETIMEDOUT ? WT_TIMEOUT : reason == 0 ? WT_EVENT : WT_ERROR;
-}
-
-int CTimer::condTimedWaitUS(pthread_cond_t* cond, pthread_mutex_t* mutex, uint64_t delay) {
-    timeval now;
-    gettimeofday(&now, 0);
-    const uint64_t time_us = now.tv_sec * uint64_t(1000000) + now.tv_usec + delay;
-    timespec timeout;
-    timeout.tv_sec = time_us / 1000000;
-    timeout.tv_nsec = (time_us % 1000000) * 1000;
-
-    return pthread_cond_timedwait(cond, mutex, &timeout);
-}
-
-//
 CUDTException::CUDTException(CodeMajor major, CodeMinor minor, int err):
 m_iMajor(major),
 m_iMinor(minor)
@@ -264,6 +124,10 @@ const string& CUDTException::getErrorString() const
            m_strMsg += ": abort for security reasons";
            break;
 
+        case MN_CLOSED:
+           m_strMsg += ": socket closed during operation";
+           break;
+
         default:
            break;
         }
@@ -298,6 +162,11 @@ const string& CUDTException::getErrorString() const
 
         case MN_MEMORY:
            m_strMsg += ": unable to allocate buffers";
+           break;
+
+
+        case MN_OBJECT:
+           m_strMsg += ": unable to allocate system object";
            break;
 
         default:
@@ -389,6 +258,9 @@ const string& CUDTException::getErrorString() const
         case MN_EIDINVAL:
            m_strMsg += ": Invalid epoll ID";
            break;
+
+        case MN_EEMPTY:
+           m_strMsg += ": All sockets removed from epoll, waiting would deadlock";
 
         default:
            break;
@@ -497,7 +369,10 @@ void CIPAddress::ntop(const sockaddr_any& addr, uint32_t ip[4])
 {
     if (addr.family() == AF_INET)
     {
+        // SRT internal format of IPv4 address.
+        // The IPv4 address is in the first field. The rest is 0.
         ip[0] = addr.sin.sin_addr.s_addr;
+        ip[1] = ip[2] = ip[3] = 0;
     }
     else
     {
@@ -509,30 +384,142 @@ void CIPAddress::ntop(const sockaddr_any& addr, uint32_t ip[4])
     }
 }
 
+bool checkMappedIPv4(const uint16_t* addr)
+{
+    static const uint16_t ipv4on6_model [8] =
+    {
+        0, 0, 0, 0, 0, 0xFFFF, 0, 0
+    };
+
+    // Compare only first 6 words. Remaining 2 words
+    // comprise the IPv4 address, if these first 6 match.
+    const uint16_t* mbegin = ipv4on6_model;
+    const uint16_t* mend = ipv4on6_model + 6;
+
+    return std::equal(mbegin, mend, addr);
+}
+
 // XXX This has void return and the first argument is passed by reference.
 // Consider simply returning sockaddr_any by value.
-void CIPAddress::pton(sockaddr_any& w_addr, const uint32_t ip[4], int ver)
+void CIPAddress::pton(sockaddr_any& w_addr, const uint32_t ip[4], const sockaddr_any& peer)
 {
-   if (AF_INET == ver)
-   {
-      sockaddr_in* a = (&w_addr.sin);
-      a->sin_addr.s_addr = ip[0];
-   }
-   else
-   {
-      sockaddr_in6* a = (&w_addr.sin6);
-      for (int i = 0; i < 4; ++ i)
-      {
-         a->sin6_addr.s6_addr[i * 4] = ip[i] & 0xFF;
-         a->sin6_addr.s6_addr[i * 4 + 1] = (unsigned char)((ip[i] & 0xFF00) >> 8);
-         a->sin6_addr.s6_addr[i * 4 + 2] = (unsigned char)((ip[i] & 0xFF0000) >> 16);
-         a->sin6_addr.s6_addr[i * 4 + 3] = (unsigned char)((ip[i] & 0xFF000000) >> 24);
-      }
-   }
+    uint32_t* target_ipv4_addr = NULL;
+
+    if (peer.family() == AF_INET)
+    {
+        sockaddr_in* a = (&w_addr.sin);
+        target_ipv4_addr = (uint32_t*) &a->sin_addr.s_addr;
+    }
+    else // AF_INET6
+    {
+        // Check if the peer address is a model of IPv4-mapped-on-IPv6.
+        // If so, it means that the `ip` array should be interpreted as IPv4.
+        const bool is_mapped_ipv4 = checkMappedIPv4((uint16_t*)peer.sin6.sin6_addr.s6_addr);
+
+        sockaddr_in6* a = (&w_addr.sin6);
+
+        // This whole above procedure was only in order to EXCLUDE the
+        // possibility of IPv4-mapped-on-IPv6. This below may only happen
+        // if BOTH peers are IPv6. Otherwise we have a situation of cross-IP
+        // version connection in which case the address in question is always
+        // IPv4 in various mapping formats.
+        if (!is_mapped_ipv4)
+        {
+            // Here both agent and peer use IPv6, in which case
+            // `ip` contains the full IPv6 address, so just copy
+            // it as is.
+
+            // XXX Possibly, a simple
+            // memcpy( (a->sin6_addr.s6_addr), ip, 16);
+            // would do the same thing, and faster. The address in `ip`,
+            // even though coded here as uint32_t, is still big endian.
+            for (int i = 0; i < 4; ++ i)
+            {
+                a->sin6_addr.s6_addr[i * 4 + 0] = ip[i] & 0xFF;
+                a->sin6_addr.s6_addr[i * 4 + 1] = (unsigned char)((ip[i] & 0xFF00) >> 8);
+                a->sin6_addr.s6_addr[i * 4 + 2] = (unsigned char)((ip[i] & 0xFF0000) >> 16);
+                a->sin6_addr.s6_addr[i * 4 + 3] = (unsigned char)((ip[i] & 0xFF000000) >> 24);
+            }
+            return; // The address is written, nothing left to do.
+        }
+
+        // 
+        // IPv4 mapped on IPv6
+
+        // Here agent uses IPv6 with IPPROTO_IPV6/IPV6_V6ONLY == 0
+        // In this case, the address in `ip` is always an IPv4,
+        // although we are not certain as to whether it's using the
+        // IPv6 encoding (0::FFFF:IPv4) or SRT encoding (IPv4::0);
+        // this must be extra determined.
+        //
+        // Unfortunately, sockaddr_in6 doesn't give any straightforward
+        // method for it, although the official size of a single element
+        // of the IPv6 address is 16-bit.
+
+        memset((a->sin6_addr.s6_addr), 0, sizeof a->sin6_addr.s6_addr);
+
+        // The sin6_addr.s6_addr32 is non that portable to use here.
+        uint32_t* paddr32 = (uint32_t*)a->sin6_addr.s6_addr;
+        uint16_t* paddr16 = (uint16_t*)a->sin6_addr.s6_addr;
+
+        // layout: of IPv4 address 192.168.128.2
+        // 16-bit:
+        // [0000: 0000: 0000: 0000: 0000: FFFF: 192.168:128.2]
+        // 8-bit
+        // [00/00/00/00/00/00/00/00/00/00/FF/FF/192/168/128/2]
+        // 32-bit
+        // [00000000 && 00000000 && 0000FFFF && 192.168.128.2]
+
+        // Spreading every 16-bit word separately to avoid endian dilemmas
+        paddr16[2 * 2 + 1] = 0xFFFF;
+
+        target_ipv4_addr = &paddr32[3];
+    }
+
+    // Now we have two possible formats of encoding the IPv4 address:
+    // 1. If peer is IPv4, it's IPv4::0
+    // 2. If peer is IPv6, it's 0::FFFF:IPv4.
+    //
+    // Has any other possibility happen here, copy an empty address,
+    // which will be the only sign of an error.
+
+    const uint16_t* peeraddr16 = (uint16_t*)ip;
+    const bool is_mapped_ipv4 = checkMappedIPv4(peeraddr16);
+
+    if (is_mapped_ipv4)
+    {
+        *target_ipv4_addr = ip[3];
+        HLOGC(inlog.Debug, log << "pton: Handshake address: " << w_addr.str() << " provided in IPv6 mapping format");
+    }
+    // Check SRT IPv4 format.
+    else if ((ip[1] | ip[2] | ip[3]) == 0)
+    {
+        *target_ipv4_addr = ip[0];
+        HLOGC(inlog.Debug, log << "pton: Handshake address: " << w_addr.str() << " provided in SRT IPv4 format");
+    }
+    else
+    {
+        LOGC(inlog.Error, log << "pton: IPE or net error: can't determine IPv4 carryover format: " << std::hex
+                << peeraddr16[0] << ":"
+                << peeraddr16[1] << ":"
+                << peeraddr16[2] << ":"
+                << peeraddr16[3] << ":"
+                << peeraddr16[4] << ":"
+                << peeraddr16[5] << ":"
+                << peeraddr16[6] << ":"
+                << peeraddr16[7] << std::dec);
+        *target_ipv4_addr = 0;
+        if (peer.family() != AF_INET)
+        {
+            // Additionally overwrite the 0xFFFF that has been
+            // just written 50 lines above.
+            w_addr.sin6.sin6_addr.s6_addr[10] = 0;
+            w_addr.sin6.sin6_addr.s6_addr[11] = 0;
+        }
+    }
 }
 
 using namespace std;
-
 
 static string ShowIP4(const sockaddr_in* sin)
 {
@@ -619,7 +606,9 @@ std::string MessageTypeStr(UDTMessageType mt, uint32_t extt)
         "EXT:kmreq",
         "EXT:kmrsp",
         "EXT:sid",
-        "EXT:congctl"
+        "EXT:congctl",
+        "EXT:filter",
+        "EXT:group"
     };
 
 
@@ -685,24 +674,57 @@ extern const char* const srt_rejectreason_msg [] = {
     "Password required or unexpected",
     "MessageAPI/StreamAPI collision",
     "Congestion controller type collision",
-    "Packet Filter type collision"
+    "Packet Filter type collision",
+    "Group settings collision",
+    "Connection timeout"
 };
 
-const char* srt_rejectreason_str(SRT_REJECT_REASON rid)
+const char* srt_rejectreason_str(int id)
 {
-    int id = rid;
+    if (id >= SRT_REJC_PREDEFINED)
+    {
+        return "Application-defined rejection reason";
+    }
+
     static const size_t ra_size = Size(srt_rejectreason_msg);
     if (size_t(id) >= ra_size)
         return srt_rejectreason_msg[0];
     return srt_rejectreason_msg[id];
 }
 
-// Some logging imps
-#if ENABLE_LOGGING
+bool SrtParseConfig(string s, SrtConfig& w_config)
+{
+    using namespace std;
+
+    vector<string> parts;
+    Split(s, ',', back_inserter(parts));
+
+    w_config.type = parts[0];
+
+    for (vector<string>::iterator i = parts.begin()+1; i != parts.end(); ++i)
+    {
+        vector<string> keyval;
+        Split(*i, ':', back_inserter(keyval));
+        if (keyval.size() != 2)
+            return false;
+        w_config.parameters[keyval[0]] = keyval[1];
+    }
+
+    return true;
+}
+
+uint64_t PacketMetric::fullBytes()
+{
+    static const int PKT_HDR_SIZE = CPacket::HDR_SIZE + CPacket::UDP_HDR_SIZE;
+    return bytes + pkts * PKT_HDR_SIZE;
+}
+
 
 namespace srt_logging
 {
 
+// Value display utilities
+// (also useful for applications)
 
 std::string SockStatusStr(SRT_SOCKSTATUS s)
 {
@@ -732,6 +754,35 @@ std::string SockStatusStr(SRT_SOCKSTATUS s)
 
     return names.names[int(s)-1];
 }
+
+#if ENABLE_EXPERIMENTAL_BONDING
+std::string MemberStatusStr(SRT_MEMBERSTATUS s)
+{
+    if (int(s) < int(SRT_GST_PENDING) || int(s) > int(SRT_GST_BROKEN))
+        return "???";
+
+    static struct AutoMap
+    {
+        std::string names[int(SRT_GST_BROKEN)+1];
+
+        AutoMap()
+        {
+#define SINI(statename) names[SRT_GST_##statename] = #statename
+            SINI(PENDING);
+            SINI(IDLE);
+            SINI(RUNNING);
+            SINI(BROKEN);
+#undef SINI
+        }
+    } names;
+
+    return names.names[int(s)];
+}
+#endif
+
+// Logging system implementation
+
+#if ENABLE_LOGGING
 
 LogDispatcher::Proxy::Proxy(LogDispatcher& guy) : that(guy), that_enabled(that.CheckEnabled())
 {
@@ -845,7 +896,7 @@ std::string LogDispatcher::Proxy::ExtractName(std::string pretty_function)
 
     return pretty_function.substr(pos+2);
 }
+#endif
 
 } // (end namespace srt_logging)
 
-#endif

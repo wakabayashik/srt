@@ -38,13 +38,13 @@ written by
    Yunhong Gu, last updated 01/27/2011
 *****************************************************************************/
 
-#ifndef __UDT_CACHE_H__
-#define __UDT_CACHE_H__
+#ifndef INC_SRT_CACHE_H
+#define INC_SRT_CACHE_H
 
 #include <list>
 #include <vector>
 
-#include "common.h"
+#include "sync.h"
 #include "netinet_any.h"
 #include "udt.h"
 
@@ -83,6 +83,8 @@ public:
    m_iCurrSize(0)
    {
       m_vHashPtr.resize(m_iHashSize);
+      // Exception: -> CUDTUnited ctor
+      srt::sync::setupMutex(m_Lock, "Cache");
    }
 
    ~CCache()
@@ -97,7 +99,7 @@ public:
 
    int lookup(T* data)
    {
-      srt::sync::CGuard cacheguard(m_Lock);
+      srt::sync::ScopedLock cacheguard(m_Lock);
 
       int key = data->getKey();
       if (key < 0)
@@ -125,7 +127,7 @@ public:
 
    int update(T* data)
    {
-      srt::sync::CGuard cacheguard(m_Lock);
+      srt::sync::ScopedLock cacheguard(m_Lock);
 
       int key = data->getKey();
       if (key < 0)
@@ -244,12 +246,14 @@ public:
    double m_dCWnd;		// congestion window size, congestion control
 
 public:
-   virtual ~CInfoBlock() {}
-   virtual CInfoBlock& operator=(const CInfoBlock& obj);
-   virtual bool operator==(const CInfoBlock& obj);
-   virtual CInfoBlock* clone();
-   virtual int getKey();
-   virtual void release() {}
+   CInfoBlock() {} // NOTE: leaves uninitialized
+   CInfoBlock& copyFrom(const CInfoBlock& obj);
+   CInfoBlock(const CInfoBlock& src) { copyFrom(src); }
+   CInfoBlock& operator=(const CInfoBlock& src) { return copyFrom(src); }
+   bool operator==(const CInfoBlock& obj);
+   CInfoBlock* clone();
+   int getKey();
+   void release() {}
 
 public:
 

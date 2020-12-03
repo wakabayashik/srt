@@ -178,7 +178,6 @@ private:
         m_llSndMaxBW = maxbw > 0 ? maxbw : BW_INFINITE;
         updatePktSndPeriod();
 
-#ifdef SRT_ENABLE_NOCWND
         /*
          * UDT default flow control should not trigger under normal SRT operation
          * UDT stops sending if the number of packets in transit (not acknowledged)
@@ -188,9 +187,6 @@ private:
          */
         // XXX Consider making this a socket option.
         m_dCWndSize = m_dMaxCWndSize;
-#else
-        m_dCWndSize = 1000;
-#endif
     }
 
     void updateBandwidth(int64_t maxbw, int64_t bw) ATR_OVERRIDE
@@ -502,7 +498,7 @@ private:
         HLOGC(cclog.Debug, log << "FileCC: LOSS: "
             << "sent=" << CSeqNo::seqlen(m_iLastAck, m_parent->sndSeqNo()) << ", inFlight=" << pktsInFlight
             << ", lost=" << numPktsLost << " ("
-            << lost_pcent_x10 / 10 << "." << lost_pcent_x10 % 10 << "\%)");
+            << lost_pcent_x10 / 10 << "." << lost_pcent_x10 % 10 << "%)");
         if (lost_pcent_x10 < 20)    // 2.0%
         {
             HLOGC(cclog.Debug, log << "FileCC: LOSS: m_dLastDecPeriod=" << m_dLastDecPeriod << "->" << m_dPktSndPeriod);

@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef INC__PACKETFILTER_H
-#define INC__PACKETFILTER_H
+#ifndef INC_SRT_PACKETFILTER_H
+#define INC_SRT_PACKETFILTER_H
 
 #include <cstdlib>
 #include <map>
@@ -179,6 +179,7 @@ public:
     void receive(CUnit* unit, std::vector<CUnit*>& w_incoming, loss_seqs_t& w_loss_seqs);
 
 protected:
+    PacketFilter& operator=(const PacketFilter& p);
     void InsertRebuilt(std::vector<CUnit*>& incoming, CUnitQueue* uq);
 
     CUDT* m_parent;
