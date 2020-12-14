@@ -1,0 +1,10 @@
+D:/Projects/libsrt/srt/vc2017/CMakeFiles/INSTALL.dir
+D:/Projects/libsrt/srt/vc2017/CMakeFiles/srt-file-transmit.dir
+D:/Projects/libsrt/srt/vc2017/CMakeFiles/srt_shared.dir
+D:/Projects/libsrt/srt/vc2017/CMakeFiles/srt_virtual.dir
+D:/Projects/libsrt/srt/vc2017/CMakeFiles/srtsupport_virtual.dir
+D:/Projects/libsrt/srt/vc2017/CMakeFiles/srt_static.dir
+D:/Projects/libsrt/srt/vc2017/CMakeFiles/srt-live-transmit.dir
+D:/Projects/libsrt/srt/vc2017/CMakeFiles/srt-tunnel.dir
+D:/Projects/libsrt/srt/vc2017/CMakeFiles/ALL_BUILD.dir
+D:/Projects/libsrt/srt/vc2017/CMakeFiles/ZERO_CHECK.dir
