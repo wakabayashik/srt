@@ -82,7 +82,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -91,19 +91,19 @@
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <Optimization>Disabled</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <UseFullPaths>false</UseFullPaths>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_STDCXX_SYNC=1;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.2";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.2";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;ENABLE_LOGGING=1;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_STDCXX_SYNC=1;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.2\";CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;ENABLE_LOGGING=1;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.2\";CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -111,7 +111,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>Debug\srt_static.lib;D:\Projects\libsrt\openssl\x86\Debug\lib\libssl.lib;D:\Projects\libsrt\openssl\x86\Debug\lib\libcrypto.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;Crypt32.lib</AdditionalDependencies>
+      <AdditionalDependencies>Debug\srt_static.lib;D:\Projects\libsrt\openssl\x86\Debug\lib\libssl.lib;D:\Projects\libsrt\openssl\x86\Debug\lib\libcrypto.lib;ws2_32.lib;D:\Projects\libsrt\pthread-win32\bin\Win32_MSVC2017.Release\pthread_lib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -126,28 +126,28 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <Optimization>MaxSpeed</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <UseFullPaths>false</UseFullPaths>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_STDCXX_SYNC=1;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.2";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.2";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <DebugInformationFormat>
       </DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_STDCXX_SYNC=1;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.2\";CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.2\";CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -155,7 +155,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>Release\srt_static.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libssl.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libcrypto.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;Crypt32.lib</AdditionalDependencies>
+      <AdditionalDependencies>Release\srt_static.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libssl.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libcrypto.lib;ws2_32.lib;D:\Projects\libsrt\pthread-win32\bin\Win32_MSVC2017.Release\pthread_lib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -170,7 +170,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -181,17 +181,17 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <UseFullPaths>false</UseFullPaths>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_STDCXX_SYNC=1;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.2";CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.2";CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <DebugInformationFormat>
       </DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_STDCXX_SYNC=1;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.2\";CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.2\";CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -199,7 +199,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>MinSizeRel\srt_static.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libssl.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libcrypto.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>MinSizeRel\srt_static.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libssl.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libcrypto.lib;ws2_32.lib;D:\Projects\libsrt\pthread-win32\bin\Win32_MSVC2017.Release\pthread_lib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -214,7 +214,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -226,15 +226,15 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <UseFullPaths>false</UseFullPaths>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_STDCXX_SYNC=1;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.2";CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION="1.4.2";CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_STDCXX_SYNC=1;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.2\";CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;ENABLE_LOGGING=1;NDEBUG;SRT_ENABLE_VERBOSE_LOCK;SRT_ENABLE_APP_READER;SRT_ENABLE_CLOSE_SYNCH;_WIN32_WINNT=0x0600;HAVE_INET_PTON=1;USE_OPENSSL=1;SRT_ENABLE_ENCRYPTION;ENABLE_SOCK_CLOEXEC=1;WIN32=1;PTW32_STATIC_LIB=1;_GNU_SOURCE;HAI_PATCH=1;HAI_ENABLE_SRT=1;SRT_VERSION=\"1.4.2\";CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\libsrt\srt\common;D:\Projects\libsrt\srt\srtcore;D:\Projects\libsrt\srt\haicrypt;D:\Projects\libsrt\srt\vc2017;D:\Projects\libsrt\pthread-win32;D:\Projects\libsrt\srt\apps;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -242,7 +242,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>RelWithDebInfo\srt_static.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libssl.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libcrypto.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>RelWithDebInfo\srt_static.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libssl.lib;D:\Projects\libsrt\openssl\x86\Release\lib\libcrypto.lib;ws2_32.lib;D:\Projects\libsrt\pthread-win32\bin\Win32_MSVC2017.Release\pthread_lib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>

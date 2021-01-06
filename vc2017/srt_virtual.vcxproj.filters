@@ -67,7 +67,7 @@
     <ClCompile Include="D:\Projects\libsrt\srt\srtcore\sync.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Projects\libsrt\srt\srtcore\sync_cxx11.cpp">
+    <ClCompile Include="D:\Projects\libsrt\srt\srtcore\sync_posix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="D:\Projects\libsrt\srt\haicrypt\cryspr.c">

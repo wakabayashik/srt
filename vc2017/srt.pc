@@ -7,6 +7,6 @@ Name: srt
 Description: SRT library set
 Version: 1.4.2
 Libs: -L${libdir} -lsrt   
-Libs.private:  ws2_32.lib
+Libs.private:  ws2_32.lib D:/Projects/libsrt/pthread-win32/bin/Win32_MSVC2017.Release/pthread_lib.lib
 Cflags: -I${includedir} -I${includedir}/srt
 Requires.private: openssl libcrypto

@@ -288,7 +288,7 @@ ENABLE_SOCK_CLOEXEC:BOOL=ON
 ENABLE_STATIC:BOOL=ON
 
 //Use C++11 chrono and threads for timing instead of pthreads
-ENABLE_STDCXX_SYNC:BOOL=ON
+ENABLE_STDCXX_SYNC:BOOL=OFF
 
 //Should the Developer Test Applications be Built?
 ENABLE_TESTING:BOOL=OFF
@@ -306,6 +306,10 @@ OPENSSL_ROOT_DIR:PATH=D:/Projects/libsrt/openssl/x86/Release
 
 //pkg-config executable
 PKG_CONFIG_EXECUTABLE:FILEPATH=C:/Strawberry/perl/bin/pkg-config
+
+PTHREAD_INCLUDE_DIR:PATH=D:/Projects/libsrt/pthread-win32
+
+PTHREAD_LIBRARY:PATH=D:/Projects/libsrt/pthread-win32/bin/Win32_MSVC2017.Release/pthread_lib.lib
 
 //Value Computed by CMake
 SRT_BINARY_DIR:STATIC=D:/Projects/libsrt/srt/vc2017
@@ -337,10 +341,10 @@ USE_OPENSSL_PC:BOOL=ON
 USE_STATIC_LIBSTDCXX:BOOL=OFF
 
 //Dependencies for the target
-srt_shared_LIB_DEPENDS:STATIC=optimized;D:/Projects/libsrt/openssl/x86/Release/lib/libssl.lib;debug;D:/Projects/libsrt/openssl/x86/Debug/lib/libssl.lib;optimized;D:/Projects/libsrt/openssl/x86/Release/lib/libcrypto.lib;debug;D:/Projects/libsrt/openssl/x86/Debug/lib/libcrypto.lib;general;ws2_32.lib;general;Ws2_32.lib;
+srt_shared_LIB_DEPENDS:STATIC=optimized;D:/Projects/libsrt/openssl/x86/Release/lib/libssl.lib;debug;D:/Projects/libsrt/openssl/x86/Debug/lib/libssl.lib;optimized;D:/Projects/libsrt/openssl/x86/Release/lib/libcrypto.lib;debug;D:/Projects/libsrt/openssl/x86/Debug/lib/libcrypto.lib;general;ws2_32.lib;general;D:/Projects/libsrt/pthread-win32/bin/Win32_MSVC2017.Release/pthread_lib.lib;general;Ws2_32.lib;
 
 //Dependencies for the target
-srt_static_LIB_DEPENDS:STATIC=optimized;D:/Projects/libsrt/openssl/x86/Release/lib/libssl.lib;debug;D:/Projects/libsrt/openssl/x86/Debug/lib/libssl.lib;optimized;D:/Projects/libsrt/openssl/x86/Release/lib/libcrypto.lib;debug;D:/Projects/libsrt/openssl/x86/Debug/lib/libcrypto.lib;general;ws2_32.lib;
+srt_static_LIB_DEPENDS:STATIC=optimized;D:/Projects/libsrt/openssl/x86/Release/lib/libssl.lib;debug;D:/Projects/libsrt/openssl/x86/Debug/lib/libssl.lib;optimized;D:/Projects/libsrt/openssl/x86/Release/lib/libcrypto.lib;debug;D:/Projects/libsrt/openssl/x86/Debug/lib/libcrypto.lib;general;ws2_32.lib;general;D:/Projects/libsrt/pthread-win32/bin/Win32_MSVC2017.Release/pthread_lib.lib;
 
 
 ########################

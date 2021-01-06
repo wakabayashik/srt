@@ -75,7 +75,7 @@
     <Object Include="D:\Projects\libsrt\srt\vc2017\srt_virtual.dir\$(Configuration)\sync.obj">
       <Filter>Object Libraries</Filter>
     </Object>
-    <Object Include="D:\Projects\libsrt\srt\vc2017\srt_virtual.dir\$(Configuration)\sync_cxx11.obj">
+    <Object Include="D:\Projects\libsrt\srt\vc2017\srt_virtual.dir\$(Configuration)\sync_posix.obj">
       <Filter>Object Libraries</Filter>
     </Object>
     <Object Include="D:\Projects\libsrt\srt\vc2017\srt_virtual.dir\$(Configuration)\srt_shared.res">
