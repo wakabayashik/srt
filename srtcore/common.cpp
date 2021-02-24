@@ -313,7 +313,9 @@ uint64_t CTimer::getTime()
     }
     LARGE_INTEGER tickNow;
     QueryPerformanceCounter(&tickNow);
-    return tickNow.QuadPart * 1000000 / tickFrequency.QuadPart;
+    // "tickNow.QuadPart * 1000000" will be overflowed in about 32 days from OS beginning (with 3.4GHz CPU)
+    uint64_t s = tickNow.QuadPart / tickFrequency.QuadPart;
+    return s * 1000000 + (tickNow.QuadPart - s * tickFrequency.QuadPart) * 1000000 / tickFrequency.QuadPart;
 #else
     timeval t;
     gettimeofday(&t, 0);
